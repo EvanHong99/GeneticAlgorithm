@@ -1,0 +1,20 @@
+
+task2 需要利用上一个environment的最短路径来加速下一environment。是否可以视为将新的customer一个个插入，我们根据距离和现有的访问顺序来决定插入在哪两个customer中间
+
+task3 subregion
+先根据chromosome聚类，GA，再合并
+
+task4 multi-objective
+In addition to the weighting objective functions-based method, students should develop a Pareto dominance
+selection-based evolutionary algorithm to handle the multi-objective optimization problem and discuss the
+advantages and disadvantages of the weighting objective functions-based method and Pareto dominance selection based method.
+
+moea_awGA_templet	多目标优化awGA算法模板
+
+task5 需要在规定时间窗口内到访指定客户早到晚到都会受到penalty
+optimizing the following three
+objectives: minimize total travel distance, maximize total sales profit, and minimize the total violation value of
+the time window, where the total violation value of the time window is the summation of the violation value of
+the time window for each customer.
+
+You must write the readme file to explain how the code works

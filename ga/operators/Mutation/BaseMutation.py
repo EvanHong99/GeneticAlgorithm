@@ -10,8 +10,13 @@ from typing import overload
 
 
 class BaseMutation:
-    def __init__(self):
-        pass
+    def __init__(self,pom):
+        """
+
+        :param pom: probability of mutation
+        """
+
+        self.pom=pom
 
     @overload
     def mutate(self):

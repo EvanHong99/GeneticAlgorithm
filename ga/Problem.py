@@ -9,15 +9,42 @@
 import os
 from typing import overload
 import numpy as np
+import pandas as pd
 
 
 class Problem:
-    def __init__(self):
+    def __init__(self,row,col):
         """
         存放目标函数的参数
+        """
+        self.cost = np.ndarray((row,col),dtype=float)
+
+    @overload
+    def init_cost(self, info:pd.DataFrame):
+        """
+        init the cost between two customer
+        Args:
+            info:
+
+        Returns:
+
+        """
+        pass
+
+    @overload
+    def calc_fitness(self, chromosome):
+        """
+        Individual level. Fitness evaluates the chance that an individual is selected to produce children.
+        It should be implemented in problem, because different problems will have different fitness funcs
+        :param chromosome:
+        :return:
         """
         pass
 
     @overload
     def objective_func(self):
+        """
+        calculate the overall score about the population
+        :return:
+        """
         pass

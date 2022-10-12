@@ -20,29 +20,27 @@ class SwapMutation(BaseMutation):
 
         :param pom: probability of mutation
         """
-        super().__init__()
-        self.pom=pom
+        super().__init__(pom)
 
-    def mutate(self,gene:np.ndarray,gType:ChromeRepr):
+
+    def mutate(self, chromo:np.ndarray):
         """
-        gType==ChromeRepr.P: randomly choose two gene and swap them
-        :param gene:
-        :param gType:
+        gType==Encoding.P: randomly choose two chromo and swap them
+        :param chromo:
         :return:
         """
-        assert gType==ChromeRepr.P
         if np.random.rand()<self.pom:
-            pos1=int(len(gene)*np.random.rand())
-            pos2=int(len(gene)*np.random.rand())
-            temp=gene[pos1]
-            gene[pos1]=gene[pos2]
-            gene[pos2]=temp
-        return gene
+            pos1=int(len(chromo) * np.random.rand())
+            pos2=int(len(chromo) * np.random.rand())
+            temp=chromo[pos1]
+            chromo[pos1]=chromo[pos2]
+            chromo[pos2]=temp
+        return chromo
 
 
 
 if __name__ == '__main__':
     gm=SwapMutation(1)
     a=np.array(range(100))
-    print(gm.mutate(a,ChromeRepr.P))
+    print(gm.mutate(a))
     print(a)

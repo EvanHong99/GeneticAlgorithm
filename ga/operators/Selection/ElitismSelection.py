@@ -23,13 +23,15 @@ class ElitismSelection(BaseSelection):
         """
         self.p=p
 
-    def select(self, fitness: np.ndarray)-> np.ndarray:
+    def select(self, fitness: np.ndarray)-> tuple[np.ndarray, np.ndarray]:
         """
         select elites
-        :param fitness:
-        :return:
+        Returns:
+            good ones, bad ones
         """
-        return fitness.argsort(kind="mergesort")[int(self.p*len(fitness)):]
+        sort=fitness.argsort(kind="mergesort")[::-1]
+        num=int(self.p*len(fitness))
+        return sort[:num],sort[len(fitness)-num:]
 
 
 if __name__ == '__main__':

@@ -7,10 +7,10 @@
 # @Description:
 from enum import Enum
 
-class ChromeRepr(Enum):
+class Encoding(Enum):
     """
-    gene representation
+    chromo representation
     """
     BIN=0
     REAL=1
-    P=2 # Permutation Chromosomes, such as gene in TSP problem
+    P=2 # Permutation Chromosomes, such as chromo in TSP problem

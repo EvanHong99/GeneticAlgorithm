@@ -45,3 +45,6 @@ class Classical_TSP(Problem):
         for i in range(len(temp) - 1):
             fitness += self.cost[temp[i]][temp[i + 1]]
         return 1000/fitness
+
+    def reverse_fitness(self,fitness):
+        return 1000/fitness

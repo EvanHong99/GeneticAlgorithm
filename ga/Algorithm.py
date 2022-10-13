@@ -52,27 +52,30 @@ class Algorithm(object):
     def run(self):
         pass
 
-    def draw(self,routine):
+    def draw(self,routine,save_path=None):
 
         # 各个点的经纬度及编号
-        l=self.population.info.loc[routine,["XCOORD","YCOORD","CUST_NO"]].values
+        dots=self.population.info.loc[routine,["XCOORD","YCOORD","CUST_NO"]].values
 
-        def drawPic(dots):
-            plt.figure(figsize=(10, 6))
-            plt.xlabel('x', fontproperties="simhei")  # x轴的标题
-            plt.ylabel('y', fontproperties="simhei")  # y轴的标题
-            # 绘制各个点及点所代表地点名称
-            for i in range(len(dots) - 1):
-                plt.text(l[i][0], l[i][1], str(l[i][2]), color='#0085c3', fontproperties="simhei")
-                plt.plot(l[i][0], l[i][1], 'o', color='#0085c3')
-            # 连接各个点
-            for i in range(len(dots) - 1):
-                start = (l[i][0], l[i + 1][0])
-                end = (l[i][1], l[i + 1][1])
-                plt.plot(start, end, color='#0085c3')
-            plt.show()
+        plt.figure(figsize=(10, 6))
+        plt.xlabel('x' )  # x轴的标题
+        plt.ylabel('y')  # y轴的标题
+        # 绘制各个点及点所代表地点名称
+        for i in range(len(dots) - 1):
+            plt.text(dots[i][0], dots[i][1], str(int(dots[i][2])),color='r')
+            plt.plot(dots[i][0], dots[i][1], 'o',color='r')
+        # 连接各个点
+        for i in range(len(dots) - 1):
+            start = (dots[i][0], dots[i + 1][0])
+            end = (dots[i][1], dots[i + 1][1])
+            plt.plot(start, end, color='b')
+        start = (dots[0][0], dots[len(dots) - 1][0])
+        end = (dots[0][1], dots[len(dots) - 1][1])
+        plt.plot(start, end, color='b')
+        if save_path is not None:
+            plt.savefig(save_path)
+        plt.show()
 
-        drawPic(l)
 
 
 

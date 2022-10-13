@@ -16,12 +16,12 @@ class ElitismSelection(BaseSelection):
     and use them to replace the individuals with the lowest fitness in next generation
     """
 
-    def __init__(self,p):
+    def __init__(self,pos):
         """
 
         :param p: portion of elites
         """
-        self.p=p
+        self.pos=pos
 
     def select(self, fitness: np.ndarray)-> tuple[np.ndarray, np.ndarray]:
         """

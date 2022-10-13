@@ -2,19 +2,18 @@
 
 ## Problem Restatement
 0. Overall target
-    - [ ] give the details of the designed algorithms
+    - [x] give the details of the designed algorithms
     - [ ] perform sensitive studies for
 the above tasks with the various parameters, for example, the crossover and mutation rates,
-the population size, and the number of generations
-    - [ ] discuss the effects of changing these
+the population size, and the number of generations, discuss the effects of changing these
 parameters
-    - [ ] show their results in various formats, such as tables, figures,
+    - [x] show their results in various formats, such as tables, figures,
 etc.
 
 1. Classical TSP
-    - [ ] find the shortest round-trip route of these 100 customers
-    - [ ] visualize the round-trip route
-    - [ ] calculate total distance
+    - [x] find the shortest round-trip route of these 100 customers
+    - [x] visualize the round-trip route
+    - [x] calculate total distance
 
 2. Dynamic optimization problem
     - [ ] tackle the problem that customers and positions are changing
@@ -68,3 +67,20 @@ visits the ¡°CUST NO 3¡± at time 1, the violation value of the time window is 2-
     - [x] python `@overload` decorator
 
 ## Task 1
+
+- [x] find the shortest round-trip route of these 100 customers
+- [x] visualize the round-trip route
+- [x] calculate total distance
+
+### Fitness
+
+In Classic TSP, lower distance means better fitness score, 
+so I use the inverse of distance to represent fitness.
+
+Coefficient 1000 makes fitness closer to 0, preventing from losing precision. 
+
+$$ fitness= 1000/distance $$
+
+### Selection - Elite
+
+Select individuals with the highest fitness 

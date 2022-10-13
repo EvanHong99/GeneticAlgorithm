@@ -24,6 +24,7 @@ class Algo_TSP_CLSC(Algorithm):
         self.ope_sel = ElitismSelection(pos)
         self.ope_cro = Recombination(poc, proportion)
         self.ope_mut = SwapMutation(pom)
+        self.best_res=None
 
     def run(self):
         # prepare
@@ -32,24 +33,16 @@ class Algo_TSP_CLSC(Algorithm):
         fit = np.array(list(map(self.problem.calc_fitness, self.population.individuals)))
         obj = self.problem.objective_func(all_fitness=fit)
         print("obj init: ", obj)
-        # elites=None
-        # bads=None
-        #
+        elites=None
+        bads=None
+        best_fit=0
+        threshold=3
+        counter=0
+        old_obj=obj
         for generation in range(self.MAXGEN):
-            # todo reintroduce
-            # if elites is not None:
-            #     pass
-
-            # selection
-            elites, bads = self.ope_sel.select(fit)
-            self.history.append(self.population.individuals[elites][0])
-            if generation == 0:
-                print("elites ",self.population.individuals[elites][0])
-            # if generation == 0:
-            #     print("before reintroduce ", self.population.individuals[bads][0])
-            self.population.individuals[bads] = self.population.individuals[elites]
-            # if generation == 0:
-            #     print("after reintroduce ", self.population.individuals[bads][0])
+            # reintroduce
+            if elites is not None:
+                self.population.individuals[bads] = self.population.individuals[elites]
 
             # crossover
             for idx in range(generation, int(self.population.pop_size / 2) + generation):
@@ -66,13 +59,31 @@ class Algo_TSP_CLSC(Algorithm):
             if generation == 0:
                 print("after mutation ", self.population.individuals[0])
 
+            # elite selection
+            elites, bads = self.ope_sel.select(fit)
+            if fit[elites[0]]>best_fit:
+                self.best_res=self.population.individuals[elites[0]]
+                best_fit=fit[elites[0]]
+
             # print score
             fit = np.array(list(map(self.problem.calc_fitness, self.population.individuals)))
             obj = self.problem.objective_func(all_fitness=fit)
-            print(f"obj {generation}: ", obj)
+            if generation%50==0:
+                print(f"obj {generation}: ", obj)
 
-        elites, bads = self.ope_sel.select(fit)
-        return obj,self.population.individuals[elites]
+            # update parameters
+            if obj<=old_obj: counter+=1
+            else: counter=0
+            if counter>=threshold:
+                self.ope_sel.pos = min(0.05+self.ope_sel.pos,0.7)# going up
+                self.ope_cro.poc = max(self.ope_cro.poc-0.02,0.05) # going down
+                self.ope_cro.proportion = max(self.ope_cro.proportion-0.05,0.1) # going down
+                self.ope_mut.pom = min(self.ope_mut.pom+0.02,0.2) # slowly going up
+                counter=0
+                print("update operators")
+
+
+        return obj,best_fit,self.best_res
 
 
 if __name__ == '__main__':
@@ -80,14 +91,11 @@ if __name__ == '__main__':
     chromo_len = 100
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.P)
     problem = Classical_TSP(pop_size, chromo_len)
-    alg = Algo_TSP_CLSC(problem, pop, 500, 0.9, 0.2, 0.2, 0.3)
+    alg = Algo_TSP_CLSC(problem, pop, 500, 0.1, 0.1, 0.5, 0.2)
 
-    obj,elites=alg.run()
-    print(elites)
-    with open('../../output/res.txt','a') as fw:
-        fw.writelines(f"{'*' * 20}= {datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')} ={'*' * 20}\n")
-        fw.write(f"{obj}\n")
-        fw.writelines(str(elites))
-        fw.writelines('\n' * 3)
+    obj,bestfit,best=alg.run()
+    np.savetxt(
+        f"../../output/res/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.txt",
+        best, fmt='%i', delimiter=",")
 
-    alg.draw(alg.history[-1])
+    alg.draw(best,save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.png")

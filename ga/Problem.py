@@ -40,6 +40,9 @@ class Problem:
         :return:
         """
         pass
+    @overload
+    def reverse_fitness(self):
+        pass
 
     @overload
     def objective_func(self):

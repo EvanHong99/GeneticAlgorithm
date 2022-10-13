@@ -8,6 +8,8 @@
 
 from ga.operators.Selection.BaseSelection import BaseSelection
 import numpy as np
+from functools import reduce
+
 
 
 class ElitismSelection(BaseSelection):
@@ -30,8 +32,10 @@ class ElitismSelection(BaseSelection):
             good ones, bad ones
         """
         sort=fitness.argsort(kind="mergesort")[::-1]
-        num=int(self.p*len(fitness))
+        num=int(self.pos*len(fitness))
         return sort[:num],sort[len(fitness)-num:]
+
+
 
 
 if __name__ == '__main__':

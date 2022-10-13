@@ -45,7 +45,7 @@ class Algorithm(object):
         self.population = population
         self.problem = problem
         self.history=[]
-        self.ope_sel=None
+        self.ope_esel=None
         self.ope_cro=None
         self.ope_mut=None
     @overload

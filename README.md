@@ -81,6 +81,39 @@ Coefficient 1000 makes fitness closer to 0, preventing from losing precision.
 
 $$ fitness= 1000/distance $$
 
+### Selection - Fitness
+
+Calculate the fitness of each chromosome, and the greater chance to be selected
+if the fitness is larger.
+
+Note that in consequence of the transformation function $ fitness= 1000/distance $,
+the transform is nonlinear, so it is easier for my program to converge.
+
+![fitness function](imgs/fitness.png)
+
 ### Selection - Elite
 
-Select individuals with the highest fitness 
+Select individuals with the highest fitness, 
+reintroduce them by replacing the worst individuals in the next loop.
+
+Higher proportion of elites means our algorithm can reach the local optimum faster,
+but lower probability to jump out of local optimum.
+
+### Crossover - Recombination
+
+My algorithm is the same as Professor showed in the class.
+
+I add some features that the probability of crossover and proportion of genes are self-defined,
+so it will be easier to converge.
+
+![recombination](imgs/recombination.png)
+
+### Mutation - Swap
+
+Classic TSP not allows repeating points, so swap two genes is a good way to perform mutation.
+
+Also, a parameter `pom(probabilitu of mutaion)` is added, in order to control the program.
+
+### Objective Function - To evaluate whole population
+
+I choose mean of fitnesses to represent it.

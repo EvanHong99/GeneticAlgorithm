@@ -13,11 +13,11 @@ import pandas as pd
 
 
 class Problem:
-    def __init__(self,row,col):
+    def __init__(self, maxrow=100, maxcol=100):
         """
         存放目标函数的参数
         """
-        self.cost = np.ndarray((row,col),dtype=float)
+        self.cost = np.ndarray((maxrow, maxcol), dtype=float)
 
     @overload
     def init_cost(self, info:pd.DataFrame):
@@ -41,7 +41,12 @@ class Problem:
         """
         pass
     @overload
-    def reverse_fitness(self):
+    def fitness_preimage(self):
+        """
+        preimage of fitness
+        Returns:
+
+        """
         pass
 
     @overload

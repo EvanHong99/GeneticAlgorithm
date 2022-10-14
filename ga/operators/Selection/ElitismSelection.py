@@ -23,7 +23,7 @@ class ElitismSelection(BaseSelection):
         """
         self.p=p
 
-    def select(self, fitness: np.ndarray)-> tuple[np.ndarray, np.ndarray]:
+    def select(self, fitness: np.ndarray):
         """
         select elites
         Returns:

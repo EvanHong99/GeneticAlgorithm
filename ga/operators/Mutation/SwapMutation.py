@@ -8,7 +8,6 @@
 
 from ga.operators.Mutation.BaseMutation import BaseMutation
 from typing import overload
-from bitarray import bitarray
 import numpy as np
 from Support import *
 

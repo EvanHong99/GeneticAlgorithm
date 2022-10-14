@@ -7,13 +7,13 @@
 # @Description:
 import numpy as np
 
-from Algorithm import Algorithm
-from Population import Population
-from problems.Classical_TSP import *
-from operators.Crossover.Recombination import Recombination
-from operators.Selection.ElitismSelection import ElitismSelection
-from operators.Mutation.SwapMutation import SwapMutation
-from Support import *
+from ga.Algorithm import Algorithm
+from ga.Population import Population
+from ga.problems.Classical_TSP import *
+from ga.operators.Crossover.Recombination import Recombination
+from ga.operators.Selection.ElitismSelection import ElitismSelection
+from ga.operators.Mutation.SwapMutation import SwapMutation
+from ga.Support import *
 from typing import overload, Union
 import datetime
 
@@ -90,4 +90,5 @@ if __name__ == '__main__':
         fw.writelines(str(elites))
         fw.writelines('\n' * 3)
 
-    alg.draw(alg.history[-1])
+    alg.draw(alg.history[-1],save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')}_{obj}.png")
+

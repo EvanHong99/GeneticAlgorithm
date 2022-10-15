@@ -45,7 +45,7 @@ class Algorithm(object):
         self.population = population
         self.problem = problem
         self.history=[]
-        self.ope_sel=None
+        self.ope_esel=None
         self.ope_cro=None
         self.ope_mut=None
     @overload
@@ -69,9 +69,14 @@ class Algorithm(object):
             start = (dots[i][0], dots[i + 1][0])
             end = (dots[i][1], dots[i + 1][1])
             plt.plot(start, end, color='b')
+
+        start = (dots[0][0], dots[len(dots) - 1][0])
+        end = (dots[0][1], dots[len(dots) - 1][1])
+        plt.plot(start, end, color='b')
         if save_path is not None:
             plt.savefig(save_path)
         plt.show()
+
 
 
 

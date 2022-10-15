@@ -13,11 +13,11 @@ import pandas as pd
 
 
 class Problem:
-    def __init__(self,row,col):
+    def __init__(self, maxrow=100, maxcol=100):
         """
         存放目标函数的参数
         """
-        self.cost = np.ndarray((row,col),dtype=float)
+        self.cost = np.ndarray((maxrow, maxcol), dtype=float)
 
     @overload
     def init_cost(self, info:pd.DataFrame):
@@ -38,6 +38,14 @@ class Problem:
         It should be implemented in problem, because different problems will have different fitness funcs
         :param chromosome:
         :return:
+        """
+        pass
+    @overload
+    def fitness_preimage(self):
+        """
+        preimage of fitness
+        Returns:
+
         """
         pass
 

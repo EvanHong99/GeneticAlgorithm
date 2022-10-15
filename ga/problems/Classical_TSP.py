@@ -12,8 +12,8 @@ import numpy as np
 
 
 class Classical_TSP(Problem):
-    def __init__(self,pop,chromo_len):
-        super().__init__(pop,chromo_len)
+    def __init__(self, maxpop=100, max_chromo_len=100):
+        super().__init__(maxpop, max_chromo_len)
 
     def _get_cost_(self, info1, info2):
         """
@@ -44,4 +44,7 @@ class Classical_TSP(Problem):
         fitness = 0
         for i in range(len(temp) - 1):
             fitness += self.cost[temp[i]][temp[i + 1]]
+        return 1000/fitness
+
+    def fitness_preimage(self, fitness):
         return 1000/fitness

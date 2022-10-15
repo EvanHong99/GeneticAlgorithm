@@ -38,6 +38,7 @@ class Population(object):
 
         """
         self.info = None
+        self.origin_info=None
         self.pop_size = pop_size
         self.chrom_len = chrom_len
         self.info_path = info_path
@@ -45,7 +46,8 @@ class Population(object):
         self.encoding = chromo_representation
 
     def initialization(self):
-        self.info = pd.read_csv(self.info_path, sep='\s+', header=0)
+        self.origin_info = pd.read_csv(self.info_path, sep='\s+', header=0)
+        self.info=self.origin_info
         self.individuals = self._init_individuals_(self.pop_size, self.chrom_len)
 
     def _init_individuals_(self, pop_size, chrom_len) -> np.ndarray:
@@ -64,14 +66,43 @@ class Population(object):
         return individuals
 
     def add_individuals(self, num):
+        """
+        add individuals while keep old ones
+        Args:
+            num:
+
+        Returns:
+
+        """
+        individuals=self.individuals.tolist()
+        new_individuals = []
+        for i in range(num):
+            a = np.arange(self.chrom_len + num, dtype=np.int8)
+            np.random.shuffle(a)
+            new_individuals.append(a.tolist())
+
+        for i in range(self.pop_size):
+            a = np.arange(self.chrom_len,self.chrom_len + num, dtype=np.int8)
+            np.random.shuffle(a)
+            individuals[i].extend(a.tolist())
+        individuals.extend(new_individuals)
+
         self.pop_size += num
         self.chrom_len += num
+        self.individuals=np.array(individuals)
+        print(f"population updated {self.individuals.shape}")
 
-
-#         todo 注意避免重复
-
+    def update_info(self,env):
+        "remember to update cost in class problem"
+        x_shift=2*env*np.cos(np.pi*env/2)
+        y_shift=2*env*np.sin(np.pi*env/2)
+        self.info['XCOORD']= self.origin_info['XCOORD'] + x_shift
+        self.info['YCOORD']= self.origin_info['YCOORD'] + y_shift
+        print(f"update info at env {env}")
 
 if __name__ == '__main__':
-    pop = Population(100, 100, "../data/TSPTW_dataset.txt", Encoding.P)
+    pop = Population(10, 10, "../data/TSPTW_dataset.txt", Encoding.P)
+    pop.initialization()
+    # print(pop.individuals)
+    pop.add_individuals(10)
     print(pop.individuals)
-    print(pop.info)

@@ -2,19 +2,18 @@
 
 ## Problem Restatement
 0. Overall target
-    - [ ] give the details of the designed algorithms
+    - [x] give the details of the designed algorithms
     - [ ] perform sensitive studies for
 the above tasks with the various parameters, for example, the crossover and mutation rates,
-the population size, and the number of generations
-    - [ ] discuss the effects of changing these
+the population size, and the number of generations, discuss the effects of changing these
 parameters
-    - [ ] show their results in various formats, such as tables, figures,
+    - [x] show their results in various formats, such as tables, figures,
 etc.
 
 1. Classical TSP
-    - [ ] find the shortest round-trip route of these 100 customers
-    - [ ] visualize the round-trip route
-    - [ ] calculate total distance
+    - [x] find the shortest round-trip route of these 100 customers
+    - [x] visualize the round-trip route
+    - [x] calculate total distance
 
 2. Dynamic optimization problem
     - [ ] tackle the problem that customers and positions are changing
@@ -68,3 +67,53 @@ visits the ¡°CUST NO 3¡± at time 1, the violation value of the time window is 2-
     - [x] python `@overload` decorator
 
 ## Task 1
+
+- [x] find the shortest round-trip route of these 100 customers
+- [x] visualize the round-trip route
+- [x] calculate total distance
+
+### Fitness
+
+In Classic TSP, lower distance means better fitness score, 
+so I use the inverse of distance to represent fitness.
+
+Coefficient 1000 makes fitness closer to 0, preventing from losing precision. 
+
+$$ fitness= 1000/distance $$
+
+### Selection - Fitness
+
+Calculate the fitness of each chromosome, and the greater chance to be selected
+if the fitness is larger.
+
+Note that in consequence of the transformation function $ fitness= 1000/distance $,
+the transform is nonlinear, so it is easier for my program to converge.
+
+![fitness function](imgs/fitness.png)
+
+### Selection - Elite
+
+Select individuals with the highest fitness, 
+reintroduce them by replacing the worst individuals in the next loop.
+
+Higher proportion of elites means our algorithm can reach the local optimum faster,
+but lower probability to jump out of local optimum.
+
+### Crossover - Recombination
+
+My algorithm is the same as Professor showed in the class.
+
+I add some features that the probability of crossover and proportion of genes are self-defined,
+so it will be easier to converge.
+
+![recombination](imgs/recombination.png)
+
+### Mutation - Swap
+
+Classic TSP not allows repeating points, so swap two genes is a good way to perform mutation.
+
+Also, a parameter `pom(probabilitu of mutaion)` is added, in order to control the program.
+
+### Objective Function - To evaluate whole population
+
+I choose mean of fitnesses to represent it.

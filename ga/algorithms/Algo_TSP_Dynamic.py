@@ -1,29 +1,28 @@
 # -*- coding=utf-8 -*-
-# @File     : Algo_TSP_CLSC.py
-# @Time     : 2022/10/12 17:01
+# @File     : Algo_TSP_Dynamic.py
+# @Time     : 2022/10/13 22:08
 # @Author   : EvanHong
 # @Email    : 939778128@qq.com
 # @Project  : code
 # @Description:
-import numpy as np
-
 
 from ga.Algorithm import Algorithm
-from ga.Population import Population
-from ga.problems.Classical_TSP import *
-from ga.operators.Crossover.Recombination import Recombination
-from ga.operators.Selection.ElitismSelection import ElitismSelection
-from ga.operators.Selection.FitnessSelection import FitnessSelection
-from ga.operators.Mutation.SwapMutation import SwapMutation
-from ga.Support import *
-
+import numpy as np
+from Algorithm import Algorithm
+from Population import Population
+from problems.Classical_TSP import *
+from operators.Crossover.Recombination import Recombination
+from operators.Selection.ElitismSelection import ElitismSelection
+from operators.Selection.FitnessSelection import FitnessSelection
+from operators.Mutation.SwapMutation import SwapMutation
+from Support import *
 from typing import overload, Union
 import datetime
 
 
-class Algo_TSP_CLSC(Algorithm):
-    def __init__(self, problem: Classical_TSP, population: Population, MAXGEN, pos, poc, proportion, pom):
-        super(Algo_TSP_CLSC, self).__init__(problem, population, MAXGEN, pos, poc, proportion, pom)
+class Algo_TSP_Dynamic(Algorithm):
+    def __init__(self, problem:Classical_TSP , population: Population, MAXGEN, pos, poc, proportion, pom):
+        super(Algo_TSP_Dynamic, self).__init__(problem, population, MAXGEN, pos, poc, proportion, pom)
         self.ope_esel = ElitismSelection(pos)
         self.ope_fsel=FitnessSelection()
         self.ope_cro = Recombination(poc, proportion)
@@ -38,11 +37,17 @@ class Algo_TSP_CLSC(Algorithm):
         bads = None
         obj=None
         best_fit = 0
-        threshold = 100
+        threshold = 10
         counter = 0
         old_obj = 0
-        print(f"threshold {threshold}")
+        env=0
         for generation in range(self.MAXGEN):
+            if generation%100==0 and env<=5 :
+                if env!=0:
+                    self.population.add_individuals(10)
+                    self.population.update_info(env)
+                    self.problem.init_cost(self.population.info)
+                env += 1
             # reintroduce
             if elites is not None:
                 self.population.individuals[bads] = self.population.individuals[elites]
@@ -74,21 +79,20 @@ class Algo_TSP_CLSC(Algorithm):
 
             # elite selection
             elites, bads = self.ope_esel.select(fit)
-            if fit[elites[0]] > best_fit:
+            if fit[elites[0]] > best_fit and env==6:
                 self.best_res = self.population.individuals[elites[0]]
                 best_fit = fit[elites[0]]
 
             # update parameters
-            if obj <= 0.9*old_obj:
+            if obj <= old_obj:
                 counter += 1
                 if counter >= threshold:
-                    pass
-                    # self.ope_esel.pos = min(0.05 + self.ope_esel.pos, 0.7)  # going up
-                    # self.ope_cro.poc = max(self.ope_cro.poc - 0.02, 0.05)  # going down
-                    # self.ope_cro.proportion = max(self.ope_cro.proportion - 0.05, 0.1)  # going down
-                    # self.ope_mut.pom = min(self.ope_mut.pom + 0.02, 0.2)  # slowly going up
-                    # counter = 0
-                    # print("update operators")
+                    self.ope_esel.pos = min(0.05 + self.ope_esel.pos, 0.7)  # going up
+                    self.ope_cro.poc = max(self.ope_cro.poc - 0.02, 0.05)  # going down
+                    self.ope_cro.proportion = max(self.ope_cro.proportion - 0.05, 0.1)  # going down
+                    self.ope_mut.pom = min(self.ope_mut.pom + 0.02, 0.2)  # slowly going up
+                    counter = 0
+                    print("update operators")
             else:
                 old_obj=obj
                 counter = 0
@@ -102,7 +106,7 @@ if __name__ == '__main__':
     chromo_len = 50
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.P)
     problem = Classical_TSP(100, 100)
-    alg = Algo_TSP_CLSC(problem, pop, 500, 0.1, 0.1, 0.5, 0.2)
+    alg = Algo_TSP_Dynamic(problem, pop, 700, 0.1, 0.1, 0.5, 0.2)
 
     obj, bestfit, best = alg.run()
     np.savetxt(

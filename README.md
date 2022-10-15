@@ -1,6 +1,7 @@
 # COMP5511 Artificial Intelligence Concepts - Assignment 1
 
 ## Problem Restatement
+
 0. Overall target
     - [x] give the details of the designed algorithms
     - [ ] perform sensitive studies for
@@ -10,10 +11,12 @@ parameters
     - [x] show their results in various formats, such as tables, figures,
 etc.
 
+
 1. Classical TSP
     - [x] find the shortest round-trip route of these 100 customers
     - [x] visualize the round-trip route
     - [x] calculate total distance
+
 
 2. Dynamic optimization problem
     - [ ] tackle the problem that customers and positions are changing
@@ -27,6 +30,7 @@ etc.
     - [ ] cluster
     先根据chromosome聚类，GA，再合并
 
+
 4. Multi-objective optimization problem
     - [ ] minimize the travel distance and maximize the sales profit, but perhaps they can't be satisfied at the same time
     - [ ] weighting objective functions-based method $min(distence-\labmda profit)$, Students can specify the ? value to get the optimal solution
@@ -34,6 +38,7 @@ etc.
     to handle the multi-objective optimization problem and discuss the advantages 
     and disadvantages of the weighting objective functions-based method 
     and Pareto dominance selection-based method.
+
 
 **sales profit of each customer can be randomly generated between [1,50]**, the two objective functions, (i.e., total travel distance ? and total sales profit ?%) may
 be conflicting, that is, a solution cannot satisfy the maximal sales profit and minimal travel
@@ -86,7 +91,7 @@ $$ fitness= 1000/distance $$
 Calculate the fitness of each chromosome, and the greater chance to be selected
 if the fitness is larger.
 
-Note that in consequence of the transformation function $ fitness= 1000/distance $,
+Note that in consequence of the transformation function $fitness=1000/distance$,
 the transform is nonlinear, so it is easier for my program to converge.
 
 ![fitness function](imgs/fitness.png)

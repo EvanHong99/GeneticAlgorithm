@@ -67,7 +67,7 @@ class Algorithm(object):
         plt.xlabel('x' )  # x轴的标题
         plt.ylabel('y')  # y轴的标题
         # 绘制各个点及点所代表地点名称
-        for i in range(len(dots) - 1):
+        for i in range(len(dots)):
             plt.text(dots[i][0], dots[i][1], str(int(dots[i][2])),color='r')
             plt.plot(dots[i][0], dots[i][1], 'o',color='r')
         # 连接各个点
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     pop_size = 100
     chromo_len = 100
     pop = Population(pop_size, chromo_len, "../data/TSPTW_dataset.txt", Encoding.P)
-    pop.initialization()
+    pop.init_info()
     problem = Classical_TSP(pop_size, chromo_len)
     alg = Algorithm(problem, pop, 100, 0.9, 0.2, 0.2, 0.3)
     alg.draw()

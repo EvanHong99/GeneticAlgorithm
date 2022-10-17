@@ -13,11 +13,12 @@ import pandas as pd
 
 
 class Problem:
-    def __init__(self, maxrow=100, maxcol=100):
+    def __init__(self):
         """
         存放目标函数的参数
         """
-        self.cost = np.ndarray((maxrow, maxcol), dtype=float)
+        self.cost=None
+
 
     @overload
     def init_cost(self, info:pd.DataFrame):
@@ -40,6 +41,14 @@ class Problem:
         :return:
         """
         pass
+
+    def calc_distance(self, chromosome):
+        temp = np.append(chromosome,chromosome[0])
+        distance = 0
+        for i in range(len(temp) - 1):
+            distance += self.cost[temp[i]][temp[i + 1]]
+        return distance
+
     @overload
     def fitness_preimage(self):
         """

@@ -8,4 +8,5 @@
 
 from ga.Problem import Problem
 
-class Dynamic_TSP(Problem   ):
+class Dynamic_TSP(Problem):
+    pass

@@ -34,7 +34,8 @@ class Algo_TSP_Dynamic(Algorithm):
 
     def run(self, if_reuse=False):
         # prepare
-        self.population.initialization()  # read data, construct the herd
+        self.population.init_info()  # read data, construct the herd
+        self.population.init_individuals()
         self.problem.init_cost(self.population.info)
         elites = None
         bads = None
@@ -51,13 +52,14 @@ class Algo_TSP_Dynamic(Algorithm):
                 if env != 0:
                     if if_reuse:
                         self.population.add_individuals(10)
-                        self.population.update_info(env)
+                        self.population.update_info_env(env)
                         self.problem.init_cost(self.population.info)
                     else:
                         self.population.pop_size += 10
                         self.population.chrom_len += 10
-                        self.population.initialization()
-                        self.population.update_info(env)
+                        self.population.init_info()
+                        self.population.init_individuals()
+                        self.population.update_info_env(env)
                         self.problem.init_cost(self.population.info)
                     env += 1
 
@@ -73,7 +75,7 @@ class Algo_TSP_Dynamic(Algorithm):
             # crossover
             for idx in range(generation, int(self.population.pop_size / 2) + generation):
                 parent1 = (2 * idx) % self.population.pop_size
-                parent2 = (2 * idx) % self.population.pop_size + 1
+                parent2 = (2 * idx + 1) % self.population.pop_size
                 child1, child2 = self.ope_cro.crossover(
                     self.population.individuals[parent1],
                     self.population.individuals[parent2])
@@ -94,7 +96,7 @@ class Algo_TSP_Dynamic(Algorithm):
             # print score and preserve history
             if generation % 50 == 0:
                 print(f"obj {generation}: ", obj)
-                dist_history.append(self.problem.fitness_preimage(fit[elites[0]]))
+                dist_history.append(self.problem.calc_distance(self.best_res))
 
             # update parameters
             if obj <= old_obj:
@@ -117,7 +119,7 @@ if __name__ == '__main__':
     pop_size = 50
     chromo_len = 50
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.P)
-    problem = Classical_TSP(100, 100)
+    problem = Classical_TSP(1e6)
     alg = Algo_TSP_Dynamic(problem, pop, 700, 0.1, 0.1, 0.5, 0.2)
 
     obj, bestfit, best, dist_history = alg.run()

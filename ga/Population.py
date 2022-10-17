@@ -9,6 +9,10 @@
 import numpy as np
 import pandas as pd
 from Support import Encoding
+from copy import deepcopy
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
 
 class Population(object):
@@ -21,7 +25,7 @@ class Population(object):
 
     """
 
-    def __init__(self, pop_size, chrom_len, info_path: str, chromo_representation: Encoding):
+    def __init__(self, pop_size, chrom_len, info_path: str, chromo_representation: Encoding,is_clustered=False):
         """
 
         :param pop_size:
@@ -38,32 +42,47 @@ class Population(object):
 
         """
         self.info = None
-        self.origin_info=None
+        self.origin_info = None
         self.pop_size = pop_size
         self.chrom_len = chrom_len
         self.info_path = info_path
         self.individuals = None
         self.encoding = chromo_representation
+        self.is_clustered=is_clustered
 
-    def initialization(self):
+    def init_info(self):
         self.origin_info = pd.read_csv(self.info_path, sep='\s+', header=0)
-        self.info=self.origin_info
-        self.individuals = self._init_individuals_(self.pop_size, self.chrom_len)
+        self.info = self.origin_info
 
-    def _init_individuals_(self, pop_size, chrom_len) -> np.ndarray:
+
+    def init_individuals(self, cluster: list[list] = None):
         """
-        every individual is a route
-        :param pop_size:
-        :param chrom_len:
-        :return:
+        Notes:
+            must update pop size and chromosome size before this func
         """
+
+        def shuffle(cluster: list[list]):
+            """
+            two dimensional shuffle
+            [[0,1,2,3],[4,5],[6,7,8]] -> [ [6, 7, 8],[2, 3, 0, 1], [4, 5]]
+            """
+            for i in range(len(cluster)):
+                np.random.shuffle(cluster[i])
+            np.random.shuffle(cluster)
+
         individuals = []
-        for i in range(pop_size):
-            a = np.arange(chrom_len, dtype=np.int8)
-            np.random.shuffle(a)
-            individuals.append(a)
-        individuals = np.array(individuals, dtype=np.int8)
-        return individuals
+        if cluster is not None:
+            for i in range(self.pop_size):
+                shuffle(cluster)
+                individuals.append(deepcopy(cluster))
+            individuals = np.array(individuals, dtype=object)
+        else:
+            a = np.arange(self.chrom_len, dtype=np.int8)
+            for i in range(self.pop_size):
+                np.random.shuffle(a)
+                individuals.append(deepcopy(a))
+            individuals = np.array(individuals, dtype=np.int8)
+        self.individuals=individuals
 
     def add_individuals(self, num):
         """
@@ -74,7 +93,7 @@ class Population(object):
         Returns:
 
         """
-        individuals=self.individuals.tolist()
+        individuals = self.individuals.tolist()
         new_individuals = []
         for i in range(num):
             a = np.arange(self.chrom_len + num, dtype=np.int8)
@@ -82,27 +101,75 @@ class Population(object):
             new_individuals.append(a.tolist())
 
         for i in range(self.pop_size):
-            a = np.arange(self.chrom_len,self.chrom_len + num, dtype=np.int8)
+            a = np.arange(self.chrom_len, self.chrom_len + num, dtype=np.int8)
             np.random.shuffle(a)
             individuals[i].extend(a.tolist())
         individuals.extend(new_individuals)
 
         self.pop_size += num
         self.chrom_len += num
-        self.individuals=np.array(individuals)
+        self.individuals = np.array(individuals)
         print(f"population updated {self.individuals.shape}")
 
-    def update_info(self,env):
-        "remember to update cost in class problem"
-        x_shift=2*env*np.cos(np.pi*env/2)
-        y_shift=2*env*np.sin(np.pi*env/2)
-        self.info['XCOORD']= self.origin_info['XCOORD'] + x_shift
-        self.info['YCOORD']= self.origin_info['YCOORD'] + y_shift
+    def update_info_env(self, env):
+        "task2 remember to update cost in class problem"
+        x_shift = 2 * env * np.cos(np.pi * env / 2)
+        y_shift = 2 * env * np.sin(np.pi * env / 2)
+        self.info['XCOORD'] = self.origin_info['XCOORD'] + x_shift
+        self.info['YCOORD'] = self.origin_info['YCOORD'] + y_shift
         print(f"update info at env {env}")
 
+    def init_shift_info(self, shift_distance):
+        """
+        create new individuals' info by shifting
+        Args:
+            shift_distance:
+
+        Returns:
+
+        """
+        newpoints = deepcopy(self.info)
+        newpoints['CUST_NO'] += self.pop_size
+        newpoints['XCOORD'] += shift_distance
+        self.info = pd.concat([self.info, newpoints], ignore_index=True)
+        self.pop_size += self.pop_size
+        self.chrom_len += self.pop_size
+        # self.individuals = self.init_individuals(self.pop_size, self.chrom_len)
+
+    def get_cluster(self, n_clusters, method="kmeans") -> list[list]:
+        """
+
+        Args:
+            n_clusters:
+            method:
+
+        Returns:
+            list of indexes of clustered genes
+        """
+        assert n_clusters <= 6
+        if method == "kmeans":
+            kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(self.info[["XCOORD", "YCOORD"]])
+            # print(kmeans.labels_)
+            clusters = []
+            print(self.pop_size)
+            for i in range(n_clusters):
+                index = np.arange(self.pop_size, dtype=int)[kmeans.labels_ == i]
+                clusters.append(list(index))
+            return clusters
+        else:
+            raise NotImplementedError("method")
+
+    @staticmethod
+    def flatten_chromosome(clustered_chromo):
+        res=[]
+        for gene in clustered_chromo:
+            res.extend(gene)
+        return res
+
+
+
 if __name__ == '__main__':
-    pop = Population(10, 10, "../data/TSPTW_dataset.txt", Encoding.P)
-    pop.initialization()
-    # print(pop.individuals)
-    pop.add_individuals(10)
-    print(pop.individuals)
+    pop = Population(100, 100, "../data/TSPTW_dataset.txt", Encoding.P)
+    pop.init_info()
+    pop.individuals= pop.init_individuals()
+    print(pop.get_cluster(4))

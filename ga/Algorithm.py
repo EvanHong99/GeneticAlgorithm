@@ -48,6 +48,12 @@ class Algorithm(object):
         self.ope_esel=None
         self.ope_cro=None
         self.ope_mut=None
+
+
+    @overload
+    def __str__(self):
+        pass
+
     @overload
     def run(self):
         pass

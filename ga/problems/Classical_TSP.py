@@ -41,10 +41,10 @@ class Classical_TSP(Problem):
         """
 
         temp = np.append(chromosome,chromosome[0])
-        fitness = 0
+        distance = 0
         for i in range(len(temp) - 1):
-            fitness += self.cost[temp[i]][temp[i + 1]]
-        return 1000/fitness
+            distance += self.cost[temp[i]][temp[i + 1]]
+        return 1000/distance
 
     def fitness_preimage(self, fitness):
         return 1000/fitness

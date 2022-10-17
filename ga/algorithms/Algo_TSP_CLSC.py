@@ -30,6 +30,9 @@ class Algo_TSP_CLSC(Algorithm):
         self.ope_mut = SwapMutation(pom)
         self.best_res = None
 
+    def __str__(self):
+        return "Algo_TSP_CLSC"
+
     def run(self):
         # prepare
         self.population.initialization()  # read data, construct the herd
@@ -38,10 +41,14 @@ class Algo_TSP_CLSC(Algorithm):
         bads = None
         obj=None
         best_fit = 0
+        dist_history=[]
         threshold = 100
         counter = 0
         old_obj = 0
-        print(f"threshold {threshold}")
+        # print(f"threshold {threshold}")
+
+
+
         for generation in range(self.MAXGEN):
             # reintroduce
             if elites is not None:
@@ -66,17 +73,18 @@ class Algo_TSP_CLSC(Algorithm):
             # mutation
             self.population.individuals = np.array(list(map(self.ope_mut.mutate, self.population.individuals)))
 
-            # print score
+            # elite selection
             fit = np.array(list(map(self.problem.calc_fitness, self.population.individuals)))
             obj = self.problem.objective_func(all_fitness=fit)
-            if generation % 50 == 0:
-                print(f"obj {generation}: ", obj)
-
-            # elite selection
             elites, bads = self.ope_esel.select(fit)
             if fit[elites[0]] > best_fit:
                 self.best_res = self.population.individuals[elites[0]]
                 best_fit = fit[elites[0]]
+
+            # print score and preserve history
+            if generation % 50 == 0:
+                print(f"obj {generation}: ", obj)
+                dist_history.append(self.problem.fitness_preimage(fit[elites[0]]))
 
             # update parameters
             if obj <= 0.9*old_obj:
@@ -94,7 +102,7 @@ class Algo_TSP_CLSC(Algorithm):
                 counter = 0
 
 
-        return obj, best_fit, self.best_res
+        return obj, best_fit, self.best_res, dist_history
 
 
 if __name__ == '__main__':
@@ -104,7 +112,8 @@ if __name__ == '__main__':
     problem = Classical_TSP(100, 100)
     alg = Algo_TSP_CLSC(problem, pop, 500, 0.1, 0.1, 0.5, 0.2)
 
-    obj, bestfit, best = alg.run()
+    obj, bestfit, best,dist_history = alg.run()
+
     np.savetxt(
         f"../../output/res/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.txt",
         best, fmt='%i', delimiter=",")

@@ -8,14 +8,50 @@
 import time
 import numpy as np
 import datetime
+from Population import Population
+from ga.problems.Classical_TSP import Classical_TSP
 
-print([0,44,64,4,41,93,67,59,45,94,81,23,24,77,62,17,83,9,90,78,7,88,99,97
-,2,51,95,87,57,74,91,55,63,18,46,5,27,50,52,76,6,25,31,71,84,56,20,30
-,37,47,69,86,92,60,82,96,89,38,19,26,3,1,61,85,32,49,48,11,34,66,12,54
-,35,70,22,13,75,80,36,33,79,8,28,53,16,43,15,39,10,21,73,29,42,58,14,68
-,40,65,98,72]==
-[0,44,64,4,41,93,67,59,45,94,81,23,24,77,62,17,83,9,90,78,7,88,99,97
-,2,51,95,87,57,74,91,55,63,18,46,5,27,50,52,76,6,25,31,71,84,56,20,30
-,37,47,69,86,92,60,82,96,89,38,19,26,3,1,61,85,32,49,48,11,34,66,12,54
-,35,70,22,13,75,80,36,33,79,8,28,53,16,43,15,39,10,21,73,29,42,58,14,68
-,40,65,98,72])
+
+def shuffle(cluster: list[list]):
+    for i in range(len(cluster)):
+        np.random.shuffle(cluster[i])
+    np.random.shuffle(cluster)
+
+def map_cluster(chromo1,chromo2):
+    mapper=[]
+    table=np.zeros(len(chromo1))
+    for i in range(len(chromo1)):
+        gene1=set(chromo1[i])
+        for j in range(len(chromo2)):
+            if table[j]==1:
+                continue
+            if set(chromo2[j])==gene1:
+                table[j]=1
+                mapper[i]=j
+    return mapper
+
+
+
+
+if __name__ == '__main__':
+
+    cluster=[[0,1,2,3],[4,5],[6,7,8]]
+    cluster1=[[0,1],[2,3,4,5],[6,7,8,9,10]]
+    individuals=[]
+    shuffle(cluster)
+    # print(cluster)
+    shuffle(cluster1)
+    individuals.append(cluster)
+    individuals.append(cluster1)
+    # print(individuals)
+    individuals=np.array(individuals,dtype=object)
+    # print(individuals)
+    # print(Population.flatten_chromosome(individuals[0]))
+    #
+    # prob=Classical_TSP(100,100)
+    # cost=np.random.rand(100,100)
+    # prob.cost=cost
+    # print(prob.cost)
+    # routine=np.arange(100)
+    # np.random.shuffle(routine)
+    # print(routine)

@@ -14,3 +14,4 @@ class Encoding(Enum):
     BIN=0
     REAL=1
     P=2 # Permutation Chromosomes, such as chromo in TSP problem
+    CP=3 # Clustered Permutation Chromosomes, such as chromo in TSP problem

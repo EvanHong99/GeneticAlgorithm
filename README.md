@@ -10,6 +10,18 @@ the population size, and the number of generations, discuss the effects of chang
 parameters
     - [x] show their results in various formats, such as tables, figures,
 etc.
+    - [ ] Introduction: Give a brief introduction about TSP, GA, etc.
+? Methodology: Include five subsection regarding the five tasks. In each
+subsection, you should give a detailed description of the designed algorithm,
+including the overall framework, crossover and mutation operators, selection
+operator, and other components.
+? Experimental results: Include five subsection regarding the five tasks. In
+each subsection, you should provide the experimental results and carry out
+sensitive studies with the various parameters, e.g., the population size, and
+discuss the effects of changing these parameters. You need to show the
+results in various formats, such as tables, figures, etc.
+? Conclusion: You should summarize what you have learned and your
+findings.
 
 
 1. Classical TSP

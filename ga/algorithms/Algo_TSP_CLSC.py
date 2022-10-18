@@ -35,7 +35,8 @@ class Algo_TSP_CLSC(Algorithm):
 
     def run(self):
         # prepare
-        self.population.initialization()  # read data, construct the herd
+        self.population.init_info()  # read data, construct the herd
+        self.population.init_individuals()
         self.problem.init_cost(self.population.info)
         elites = None
         bads = None
@@ -63,7 +64,7 @@ class Algo_TSP_CLSC(Algorithm):
             # crossover
             for idx in range(generation, int(self.population.pop_size / 2) + generation):
                 parent1 = (2 * idx) % self.population.pop_size
-                parent2 = (2 * idx) % self.population.pop_size + 1
+                parent2 = (2 * idx + 1) % self.population.pop_size
                 child1, child2 = self.ope_cro.crossover(
                     self.population.individuals[parent1],
                     self.population.individuals[parent2])
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     pop_size = 50
     chromo_len = 50
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.P)
-    problem = Classical_TSP(100, 100)
+    problem = Classical_TSP(1e6)
     alg = Algo_TSP_CLSC(problem, pop, 500, 0.1, 0.1, 0.5, 0.2)
 
     obj, bestfit, best,dist_history = alg.run()

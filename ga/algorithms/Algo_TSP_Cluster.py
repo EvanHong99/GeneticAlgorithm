@@ -119,7 +119,7 @@ if __name__ == '__main__':
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.CP)
     pop.init_info()
     problem = Classical_TSP(1e6)
-    alg = Algo_TSP_Cluster(problem, pop, 1000, 0.1, 0.1, 0.5, 0.2, 0.01, 0.01, n_cluster)
+    alg = Algo_TSP_Cluster(problem, pop, 1000, 0.1, 0.1, 0.1, 0.2, 0.05, 0.005, n_cluster)
     #
     obj, bestfit, best, dist_history = alg.run()
     best = pop.flatten_chromosome(best)

@@ -22,7 +22,7 @@ class Algo_TSP_CLSC(Algorithm):
     def __init__(self, problem: Classical_TSP, population: Population, MAXGEN, pos, poc, proportion, pom):
         super(Algo_TSP_CLSC, self).__init__(problem, population, MAXGEN, pos, poc, proportion, pom)
         self.ope_esel = ElitismSelection(pos)
-        self.ope_fsel=FitnessSelection()
+        self.ope_fsel = FitnessSelection()
         self.ope_cro = Recombination(poc, proportion)
         self.ope_mut = SwapMutation(pom)
         self.best_res = None
@@ -37,9 +37,9 @@ class Algo_TSP_CLSC(Algorithm):
         self.problem.init_cost(self.population.info)
         elites = None
         bads = None
-        obj=None
+        obj = None
         best_fit = 0
-        dist_history=[]
+        dist_history = []
         threshold = 5
         counter = 0
         old_obj = 0
@@ -49,11 +49,10 @@ class Algo_TSP_CLSC(Algorithm):
             if elites is not None:
                 self.population.individuals[bads] = self.population.individuals[elites]
 
-
             # fitness selection
             fit = np.array(list(map(self.problem.calc_fitness, self.population.individuals)))
-            selected=self.ope_fsel.select(fit)
-            self.population.individuals=self.population.individuals[selected]
+            selected = self.ope_fsel.select(fit)
+            self.population.individuals = self.population.individuals[selected]
 
             # crossover
             for idx in range(generation, int(self.population.pop_size / 2) + generation):
@@ -92,11 +91,10 @@ class Algo_TSP_CLSC(Algorithm):
                     counter = 0
                     print("update operators")
             else:
-                old_obj=obj
+                old_obj = obj
                 counter = 0
 
-
-        return obj, best_fit, self.best_res,dist_history
+        return obj, best_fit, self.best_res, dist_history
 
 
 if __name__ == '__main__':
@@ -104,12 +102,13 @@ if __name__ == '__main__':
     chromo_len = 50
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.P)
     problem = Classical_TSP(1e6)
-    alg = Algo_TSP_CLSC(problem, pop, 500, 0.1, 0.1, 0.5, 0.2)
+    alg = Algo_TSP_CLSC(problem, pop, 100, 0.1, 0.1, 0.5, 0.2)
 
-    obj, bestfit, best,dist_history = alg.run()
+    obj, bestfit, best, dist_history = alg.run()
 
     np.savetxt(
         f"../../output/res/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.txt",
         best, fmt='%i', delimiter=",")
 
-    alg.draw(best, save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.png")
+    alg.draw([16,76,46,52,99,30,5,93,92,23,88,86,20,25,84,91,66,31,37,80,78,60,33,7,38,70,4,24,43,97,1,95,27,62,96,82,59,40,10,15,39,74,83,73,32,8,17,98,85,0,6,45,14,94,36,29,75,58,69,56,49,90,79,72,57,87,67,48,81,28,68,21,26,65,11,77,89,3,18,55,71,63,22,12,35,13,50,54,34,51,2,61,19,44,42,53,9,64,47,41,],
+             save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.png")

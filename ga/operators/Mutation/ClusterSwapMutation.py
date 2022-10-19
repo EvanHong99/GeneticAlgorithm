@@ -18,7 +18,7 @@ class ClusterSwapMutation(BaseMutation):
     def __mutate_gene__(self,gene):
         pos1=int(len(gene) * np.random.rand())
         pos2=int(len(gene) * np.random.rand())
-        temp=gene[pos1]
+        temp=deepcopy(gene[pos1])
         gene[pos1]=gene[pos2]
         gene[pos2]=temp
         return gene
@@ -29,7 +29,7 @@ class ClusterSwapMutation(BaseMutation):
             # swap cluster order
             pos1 = int(len(chromo) * np.random.rand())
             pos2 = int(len(chromo) * np.random.rand())
-            temp = chromo[pos1]
+            temp = deepcopy(chromo[pos1])
             chromo[pos1] = chromo[pos2]
             chromo[pos2] = temp
 

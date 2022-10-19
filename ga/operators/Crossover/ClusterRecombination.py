@@ -127,9 +127,11 @@ if __name__ == '__main__':
         np.random.shuffle(cluster)
 
 
-    rec = ClusterRecombination(1)
-    cluster = [[0, 1, 2, 3], [4, 5], [6, 7, 8], [9]]
-    cluster1 = [[5, 4], [8, 7, 6], [1, 0, 2, 3], [9]]
+    rec = ClusterRecombination(0.5,0.5,1)
+    # cluster = [[0, 1, 2, 3], [4, 5], [6, 7, 8], [9]]
+    # cluster1 = [[5, 4], [8, 7, 6], [1, 0, 2, 3], [9]]
+    cluster = [list(range(100)), list(range(100,200))]
+    cluster1 = [list(range(100)), list(range(100,200))]
     individuals = []
     shuffle(cluster)
     # print(cluster)
@@ -138,6 +140,8 @@ if __name__ == '__main__':
     individuals.append(cluster1)
     print(individuals)
     individuals = np.array(individuals, dtype=object)
-    c1, c2 = rec.crossover(individuals[0], individuals[1])
-    print(c1)
-    print(c2)
+    for i in range(100):
+        individuals[0], individuals[1] = rec.crossover(individuals[0], individuals[1],len(cluster))
+    # print(c1)
+    # print(c2)
+    print(individuals)

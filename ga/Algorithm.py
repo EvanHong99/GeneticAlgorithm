@@ -90,7 +90,7 @@ if __name__ == '__main__':
     chromo_len = 100
     pop = Population(pop_size, chromo_len, "../data/TSPTW_dataset.txt", Encoding.P)
     pop.init_info()
-    problem = Classical_TSP(pop_size, chromo_len)
+    problem = Classical_TSP(1e6)
     alg = Algorithm(problem, pop, 100, 0.9, 0.2, 0.2, 0.3)
-    alg.draw()
+    alg.draw([16,76,46,52,99,30,5,93,92,23,88,86,20,25,84,91,66,31,37,80,78,60,33,7,38,70,4,24,43,97,1,95,27,62,96,82,59,40,10,15,39,74,83,73,32,8,17,98,85,0,6,45,14,94,36,29,75,58,69,56,49,90,79,72,57,87,67,48,81,28,68,21,26,65,11,77,89,3,18,55,71,63,22,12,35,13,50,54,34,51,2,61,19,44,42,53,9,64,47,41,])
 

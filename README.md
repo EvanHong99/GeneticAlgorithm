@@ -1,5 +1,9 @@
 # COMP5511 Artificial Intelligence Concepts - Assignment 1
 
+## Special Features
+
+- Well managed GitHub repository with formal format.
+
 ## Problem Restatement
 
 0. Overall target
@@ -98,7 +102,7 @@ Coefficient 1000 makes fitness closer to 0, preventing from losing precision.
 
 $$ fitness= 1000/distance $$
 
-### Selection - Fitness
+### Selection - Weighted Fitness
 
 Calculate the fitness of each chromosome, and the greater chance to be selected
 if the fitness is larger.
@@ -129,7 +133,7 @@ so it will be easier to converge.
 
 Classic TSP not allows repeating points, so swap two genes is a good way to perform mutation.
 
-Also, a parameter `pom(probabilitu of mutaion)` is added, in order to control the program.
+Also, a parameter `pom(probability of mutation)` is added, in order to control the program.
 
 ### Objective Function - To evaluate whole population
 

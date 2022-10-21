@@ -135,7 +135,7 @@ if __name__ == '__main__':
     problem = Classical_TSP(1e6)
     alg = Algo_TSP_Dynamic(problem, pop, 7000, 0.1, 0.1, 0.5, 0.1)
 
-    obj, bestfit, best, dist_history, path_history = alg.run()
+    obj, bestfit, best, dist_history, path_history = alg.run(if_reuse=True)
     np.savetxt(
         f"../../output/res/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{str(alg)}_{alg.pos}_{alg.poc}_{alg.proportion}_{alg.pom}_{bestfit}_{obj}.txt",
         best, fmt='%i', delimiter=",")

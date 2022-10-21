@@ -73,7 +73,7 @@ def run_SOEA_TSP():
     saveDir="./geaty_output/SOEA_TSP/"
     problem = SOEA_TSP("SOEA_TSP",root+"./data/TSPTW_dataset_profit.txt",0.5)
     # 构建算法
-    algorithm = ea.moea_NSGA2_templet(
+    algorithm = ea.soea_SEGA_templet(
         problem,
         ea.Population(Encoding='P', NIND=100),
         MAXGEN=1000,  # 最大进化代数
@@ -116,7 +116,7 @@ def run_MOEA_TSP():
     algorithm = ea.moea_NSGA2_templet(
         problem,
         ea.Population(Encoding='P', NIND=100),
-        MAXGEN=1000,  # 最大进化代数
+        MAXGEN=100,  # 最大进化代数
         logTras=0)  # 表示每隔多少代记录一次日志信息，0表示不记录。
     algorithm.mutOper.Pm = 0.2  # 修改变异算子的变异概率
     algorithm.recOper.XOVR = 0.9  # 修改交叉算子的交叉概率
@@ -187,5 +187,5 @@ def run_MOEA_TSP_Timewindow():
 
 if __name__ == '__main__':
     # run_SOEA_TSP()
-    # run_MOEA_TSP()
-    run_MOEA_TSP_Timewindow()
+    run_MOEA_TSP()
+    # run_MOEA_TSP_Timewindow()

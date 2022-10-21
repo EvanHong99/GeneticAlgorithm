@@ -50,8 +50,6 @@ class SOEA_TSP(ea.Problem):  # 继承Problem父类
             journey = self.places[X[i], :]  # 按既定顺序到达的地点坐标
             distance = np.sum(np.sqrt(np.sum(np.diff(journey.T) ** 2, 0)))  # 计算总路程
             profit=np.sum(self.data.loc[X[i],"PROFIT"])
-            # print(distance)
-            # print(profit)
             ObjV.append(distance-self.weight*profit)
         f = np.array([ObjV]).T
         # print(f)

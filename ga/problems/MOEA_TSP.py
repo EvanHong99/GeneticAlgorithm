@@ -45,11 +45,8 @@ class MOEA_TSP(ea.Problem):  # 继承Problem父类
             profit = np.sum(self.data.loc[X[i], "PROFIT"])
             all_dist.append(distance)
             all_profit.append(profit)
-            # ObjV.append(distance - self.weight * profit)
         all_dist=np.array([all_dist]).T
         all_profit=np.array([all_profit]).T
-        # print(all_dist)
-        # print(all_profit)
         f = np.hstack([all_dist, all_profit])
         # print(f)
         return f

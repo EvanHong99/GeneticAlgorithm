@@ -109,7 +109,7 @@ class Population(object):
         self.pop_size += num
         self.chrom_len += num
         self.individuals = np.array(individuals)
-        print(f"population updated {self.individuals.shape}")
+        print(f"add_individuals {self.individuals.shape}")
 
     def update_info_env(self, env):
         "task2 remember to update cost in class problem"

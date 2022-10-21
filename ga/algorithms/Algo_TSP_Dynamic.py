@@ -42,26 +42,34 @@ class Algo_TSP_Dynamic(Algorithm):
         obj = None
         best_fit = 0
         dist_history = []
+        path_history = []
         threshold = 10
         counter = 0
         old_obj = 0
         env = 0
+        record_gen = 1000
         for generation in range(self.MAXGEN):
             # update population
-            if generation % 100 == 0 and env <= 5:
+            if generation % record_gen == 0 and env <= 5:
                 if env != 0:
-                    if if_reuse:
+                    assert self.best_res is not None
+                    # print("before",self.population.individuals.shape,self.population.individuals)
+                    self.draw(self.best_res,
+                              save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{str(self)}_{self.pos}_{self.poc}_{self.proportion}_{self.pom}_{best_fit}_{obj}.png")
+                    if if_reuse:  # do not regenerate individuals
                         self.population.add_individuals(10)
                         self.population.update_info_env(env)
                         self.problem.init_cost(self.population.info)
-                    else:
+                    else:  # regenerate individuals
                         self.population.pop_size += 10
                         self.population.chrom_len += 10
-                        self.population.init_info()
-                        self.population.init_individuals()
+                        self.population.init_info()  # regenerate individuals
                         self.population.update_info_env(env)
+                        # print(self.population.info)
+                        self.population.init_individuals()
                         self.problem.init_cost(self.population.info)
-                    env += 1
+                    # print("after",self.population.individuals.shape, self.population.individuals)
+                env += 1
 
             # reintroduce
             if elites is not None:
@@ -89,30 +97,35 @@ class Algo_TSP_Dynamic(Algorithm):
             fit = np.array(list(map(self.problem.calc_fitness, self.population.individuals)))
             obj = self.problem.objective_func(all_fitness=fit)
             elites, bads = self.ope_esel.select(fit)
-            if fit[elites[0]] > best_fit and env == 6:
+            # can't use fitness, because customer number is varying
+            # if fit[elites[0]] > best_fit:
+            if obj > old_obj:
                 self.best_res = self.population.individuals[elites[0]]
                 best_fit = fit[elites[0]]
+            old_obj = obj
 
             # print score and preserve history
             if generation % 50 == 0:
                 print(f"obj {generation}: ", obj)
+            if generation % record_gen == 0:
                 dist_history.append(self.problem.calc_distance(self.best_res))
+                path_history.append(self.best_res)
 
             # update parameters
-            if obj <= old_obj:
-                counter += 1
-                if counter >= threshold:
-                    self.ope_esel.pos = min(0.05 + self.ope_esel.pos, 0.7)  # going up
-                    self.ope_cro.poc = max(self.ope_cro.poc - 0.02, 0.05)  # going down
-                    self.ope_cro.proportion = max(self.ope_cro.proportion - 0.05, 0.1)  # going down
-                    self.ope_mut.pom = min(self.ope_mut.pom + 0.02, 0.2)  # slowly going up
-                    counter = 0
-                    print("update operators")
-            else:
-                old_obj = obj
-                counter = 0
+            # if obj <= old_obj:
+            #     counter += 1
+            #     if counter >= threshold:
+            #         self.ope_esel.pos = min(0.05 + self.ope_esel.pos, 0.7)  # going up
+            #         self.ope_cro.poc = max(self.ope_cro.poc - 0.02, 0.05)  # going down
+            #         self.ope_cro.proportion = max(self.ope_cro.proportion - 0.05, 0.1)  # going down
+            #         self.ope_mut.pom = min(self.ope_mut.pom + 0.02, 0.2)  # slowly going up
+            #         counter = 0
+            #         print("update operators")
+            # else:
+            #     old_obj = obj
+            #     counter = 0
 
-        return obj, best_fit, self.best_res, dist_history
+        return obj, best_fit, self.best_res, dist_history, path_history
 
 
 if __name__ == '__main__':
@@ -120,11 +133,13 @@ if __name__ == '__main__':
     chromo_len = 50
     pop = Population(pop_size, chromo_len, "../../data/TSPTW_dataset.txt", Encoding.P)
     problem = Classical_TSP(1e6)
-    alg = Algo_TSP_Dynamic(problem, pop, 700, 0.1, 0.1, 0.5, 0.2)
+    alg = Algo_TSP_Dynamic(problem, pop, 7000, 0.1, 0.1, 0.5, 0.1)
 
-    obj, bestfit, best, dist_history = alg.run()
+    obj, bestfit, best, dist_history, path_history = alg.run()
     np.savetxt(
-        f"../../output/res/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.txt",
+        f"../../output/res/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{str(alg)}_{alg.pos}_{alg.poc}_{alg.proportion}_{alg.pom}_{bestfit}_{obj}.txt",
         best, fmt='%i', delimiter=",")
 
-    alg.draw(best, save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{obj}.png")
+    alg.draw(best,
+             save_path=f"../../output/pics/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{str(alg)}_{alg.pos}_{alg.poc}_{alg.proportion}_{alg.pom}_{bestfit}_{obj}.png")
+    print(path_history)

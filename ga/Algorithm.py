@@ -48,6 +48,10 @@ class Algorithm(object):
         self.ope_esel=None
         self.ope_cro=None
         self.ope_mut=None
+        self.pos=pos
+        self.poc=poc
+        self.proportion=proportion
+        self.pom=pom
 
 
     @overload

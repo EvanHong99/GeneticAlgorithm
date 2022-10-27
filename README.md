@@ -1,4 +1,15 @@
-# COMP5511 Artificial Intelligence Concepts - Assignment 1
+# PolyU COMP5511 Artificial Intelligence Concepts - Assignment 1
+
+Specific description please see [my report](report/COMP5511_assignment1_22043798g.pdf)
+
+## Platforms and Softwares
+
+- Python 3.9
+- Local:
+    - CPU: Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz   2.30 GHz
+    - RAM  8.00 GB (7.89 GB å¯ç”¨)
+    - OS: Windows 11
+- Remote (Google Colab)
 
 ## Special Features
 
@@ -8,13 +19,13 @@
 
 0. Overall target
     - [x] give the details of the designed algorithms
-    - [ ] perform sensitive studies for
+    - [x] perform sensitive studies for
 the above tasks with the various parameters, for example, the crossover and mutation rates,
 the population size, and the number of generations, discuss the effects of changing these
 parameters
     - [x] show their results in various formats, such as tables, figures,
 etc.
-    - [ ] Introduction: Give a brief introduction about TSP, GA, etc.
+    - [x] Introduction: Give a brief introduction about TSP, GA, etc.
 ? Methodology: Include five subsection regarding the five tasks. In each
 subsection, you should give a detailed description of the designed algorithm,
 including the overall framework, crossover and mutation operators, selection
@@ -35,54 +46,38 @@ findings.
 
 
 2. Dynamic optimization problem
-    - [ ] tackle the problem that customers and positions are changing
-    - [ ] reuse/not reuse the solutions from the last environment, and then **compare the results**
-    - [ ] visualize the round-trip route
-    - [ ] calculate total distance
-        ĞèÒªÀûÓÃÉÏÒ»¸öenvironmentµÄ×î¶ÌÂ·¾¶À´¼ÓËÙÏÂÒ»environment¡£ÊÇ·ñ¿ÉÒÔÊÓÎª½«ĞÂµÄcustomerÒ»¸ö¸ö²åÈë£¬ÎÒÃÇ¸ù¾İ¾àÀëºÍÏÖÓĞµÄ·ÃÎÊË³ĞòÀ´¾ö¶¨²åÈëÔÚÄÄÁ½¸öcustomerÖĞ¼ä
+    - [x] tackle the problem that customers and positions are changing
+    - [x] reuse/not reuse the solutions from the last environment, and then **compare the results**
+    - [x] visualize the round-trip route
+    - [x] calculate total distance
+
 
 
 3. Large-scale optimization problem
-    - [ ] cluster
-    ÏÈ¸ù¾İchromosome¾ÛÀà£¬GA£¬ÔÙºÏ²¢
+    - [x] cluster
+    å…ˆæ ¹æ®chromosomeèšç±»ï¼ŒGAï¼Œå†åˆå¹¶
 
 
 4. Multi-objective optimization problem
-    - [ ] minimize the travel distance and maximize the sales profit, but perhaps they can't be satisfied at the same time
-    - [ ] weighting objective functions-based method $min(distence-\labmda profit)$, Students can specify the ? value to get the optimal solution
-    - [ ] students should develop a **Pareto dominance selection-based evolutionary algorithm£¨»ùÓÚÑ¡ÔñµÄÅÁÀÛÍĞ¸Ä½ø½ø»¯Ëã·¨£©** 
+    - [x] minimize the travel distance and maximize the sales profit, but perhaps they can't be satisfied at the same time
+    - [x] weighting objective functions-based method $min(distence-\labmda profit)$, Students can specify the ? value to get the optimal solution
+    - [x] students should develop a **Pareto dominance selection-based evolutionary algorithmï¼ˆåŸºäºé€‰æ‹©çš„å¸•ç´¯æ‰˜æ”¹è¿›è¿›åŒ–ç®—æ³•ï¼‰** 
     to handle the multi-objective optimization problem and discuss the advantages 
     and disadvantages of the weighting objective functions-based method 
     and Pareto dominance selection-based method.
 
 
-**sales profit of each customer can be randomly generated between [1,50]**, the two objective functions, (i.e., total travel distance ? and total sales profit ?%) may
-be conflicting, that is, a solution cannot satisfy the maximal sales profit and minimal travel
-distance at the same time. 
-
-
-
-moea_awGA_templet	¶àÄ¿±êÓÅ»¯awGAËã·¨Ä£°å
-
-5. Time window constraint problem ĞèÒªÔÚ¹æ¶¨Ê±¼ä´°¿ÚÄÚµ½·ÃÖ¸¶¨¿Í»§Ôçµ½Ííµ½¶¼»áÊÜµ½penalty
-    - [ ] travel time between customers is computed by the Euclidean distance between customers
-    - [ ] students are required to develop a Pareto dominance selection-based
+5. Time window constraint problem éœ€è¦åœ¨è§„å®šæ—¶é—´çª—å£å†…åˆ°è®¿æŒ‡å®šå®¢æˆ·æ—©åˆ°æ™šåˆ°éƒ½ä¼šå—åˆ°penalty
+    - [x] travel time between customers is computed by the Euclidean distance between customers
+    - [x] students are required to develop a Pareto dominance selection-based
 evolutionary algorithm to solve the problem by optimizing the following three objectives:
 minimize total travel distance, maximize total sales profit, and minimize the total violation
 value of the time window, where the total violation value of the time window is the
-summation of the violation value of the time window for each customer. For example, ¡°READY
-TIME¡± and ¡°DUE TIME¡± of the ¡°CUST NO 3¡± are 2 and 61, respectively. If the salesman visits
-the ¡°CUST NO 3¡± at time 63, the violation value of the time window is 63-61=2. If the salesman
-visits the ¡°CUST NO 3¡± at time 1, the violation value of the time window is 2-1=1.
-    - [ ] Òò´Ë¶àÄ¿±êÓÅ»¯´ó¶àÊı³¡¾°ÏÂÎŞ·¨µÃµ½ÔÚ¸÷¸öÄ¿±êÉÏ¶¼´ïµ½×îÓÅµÄ½á¹û¡£Ö»ÄÜ´ïµ½Pareto×îÓÅ
-    
-    ¸ßË¹±äÒì
-ÔÚ½øĞĞ±äÒìÊ±ÓÃÒ»¸ö¾ùÖµÎª¦Ì£¨¦ÌÊµ¼ÊÉÏµÈÓÚÒª±äÒìµÄÖµ£©¡¢·½²îÎª¦Ò2µÄÕıÌ¬·Ö²¼µÄÒ»¸öËæ»úÊıÀ´Ìæ»»Ô­ÓĞ»ùÒòÖµ¡£Ò²¾ÍÊÇÒâÎ¶×ÅÒÔ´ËÊıÖµÎªÆÚÍû£¬ÒÔ¦Ò2£¨ÈÎÈ¡£©Îª·½²îµÄÕıÌ¬·Ö²¼ÖĞµÄÒ»¸öÖµÌæ»»µô´ËÊıÖµ¡£
-
-¸ßË¹±äÒìµÄ¾Ö²¿ËÑË÷ÄÜÁ¦½ÏºÃ£¬µ«ÊÇÒıµ¼¸öÌåÌø³ö¾Ö²¿½ÏÓÅ½âµÄÄÜÁ¦½ÏÈõ£¬²»ÀûÓÚÈ«¾ÖÊÕÁ²
-
-¶àÄ¿±êÓÅ»¯
-¶àÄ¿±êÓÅ»¯ÑĞ¾¿¶àÓÚÒ»¸öµÄÄ¿±êº¯ÊıÔÚ¸ø¶¨ÇøÓòÉÏµÄ×îÓÅ»¯£¬ÔÚºÜ¶àÊµ¼ÊÎÊÌâÖĞ£¬ÀıÈç¾­¼Ã¡¢¹ÜÀí¡¢¾üÊÂ¡¢¿ÆÑ§ºÍ¹¤³ÌÉè¼ÆµÈÁìÓò£¬ºâÁ¿Ò»¸ö·½°¸µÄºÃ»µÍùÍùÄÑÒÔÓÃÒ»¸öÖ¸±êÀ´ÅĞ¶Ï£¬¶øĞèÒªÓÃ¶à¸öÄ¿±êÀ´±È½Ï£¬¶øÕâĞ©Ä¿±êÓĞÊ±²»ÉõĞ­µ÷£¬ÉõÖÁÊÇÃ¬¶ÜµÄ¡£Òò´Ë¶àÄ¿±êÓÅ»¯´ó¶àÊı³¡¾°ÏÂÎŞ·¨µÃµ½ÔÚ¸÷¸öÄ¿±êÉÏ¶¼´ïµ½×îÓÅµÄ½á¹û¡£Ö»ÄÜ´ïµ½Pareto×îÓÅ
+summation of the violation value of the time window for each customer. For example, â€œREADY
+TIMEâ€ and â€œDUE TIMEâ€ of the â€œCUST NO 3â€ are 2 and 61, respectively. If the salesman visits
+the â€œCUST NO 3â€ at time 63, the violation value of the time window is 63-61=2. If the salesman
+visits the â€œCUST NO 3â€ at time 1, the violation value of the time window is 2-1=1.
+    - [x] å› æ­¤å¤šç›®æ ‡ä¼˜åŒ–å¤§å¤šæ•°åœºæ™¯ä¸‹æ— æ³•å¾—åˆ°åœ¨å„ä¸ªç›®æ ‡ä¸Šéƒ½è¾¾åˆ°æœ€ä¼˜çš„ç»“æœã€‚åªèƒ½è¾¾åˆ°Paretoæœ€ä¼˜
 
 6. Other Features
     - [x] python `@overload` decorator
